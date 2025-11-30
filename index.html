@@ -10,7 +10,6 @@
 
   <style>
     :root{
-      /* Kolory i style według opisu */
       --navy: #1e3a8a;
       --quote-grad-start: #3b5998;
       --quote-grad-end: #5a8dee;
@@ -22,6 +21,9 @@
       --shadow-2: 0 6px 18px rgba(59,89,152,0.08);
       --accent-text: #071a3a;
       --glass: rgba(255,255,255,0.95);
+
+      --danger: #c0392b;
+      --ok: #1f8a1f;
     }
 
     *{box-sizing:border-box}
@@ -34,7 +36,6 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
 
-      /* Zmienione tło na żądany gradient: góra #a0c7e3, dół #cbe6f8 */
       background: linear-gradient(180deg, #a0c7e3 0%, #cbe6f8 100%);
       display:flex;
       align-items:center;
@@ -206,6 +207,9 @@
       100% { transform: translateY(0) scale(1) }
     }
 
+    .speed-red{ color: var(--danger); font-weight:700 }
+    .speed-normal{ color: #16324a; font-weight:700 }
+
     /* RESPONSYWNOŚĆ - szczególnie dla telefonów w pionie */
     @media (max-width:760px){
       .container{ padding:18px; border-radius:14px; }
@@ -247,8 +251,17 @@
             <div class="note-text" id="note-text">
               <strong>Aplikacja wymaga aktualizacji</strong><br>
               Zaaktualizuj ją aby móc z niej korzystać.
+              <div style="margin-top:10px; font-size:13px;">
+                <strong>W tej aktualizacji zostało dodane m.in.:</strong>
+                <ul style="margin:6px 0 0 18px; padding:0; color:#16324a;">
+                  <li>Nowa Funkcja "Serce Gotowe" - twój wirtualny kalendarz adwentowy</li>
+                  <li>Szata graficzna została zmieniona na świąteczną</li>
+                  <li>Nowy wpis</li>
+                  <li>Poprawa błędów i spraw kosmetycznych</li>
+                </ul>
+              </div>
             </div>
-            <div class="muted" style="margin-top:10px">Wymagane: <strong id="required-mb">385mb</strong></div>
+            <div class="muted" style="margin-top:10px">Wymagane: <strong id="required-mb">1,2 GB</strong></div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
@@ -267,11 +280,11 @@
 
               <div class="progress-meta" aria-live="polite">
                 <div>
-                  <div style="font-size:13px;color:#133050">Pobrano: <strong id="downloaded">0 MB</strong> / <span id="total-mb">385 MB</span></div>
-                  <div style="font-size:13px;color:#133050">Pozostały czas: <strong id="time-left">03:00</strong></div>
+                  <div style="font-size:13px;color:#133050">Pobrano: <strong id="downloaded">0 MB</strong> / <span id="total-mb">1,2 GB</span></div>
+                  <div style="font-size:13px;color:#133050">Pozostały czas: <strong id="time-left">05:00</strong></div>
                 </div>
                 <div style="text-align:right">
-                  <div class="muted">Szybkość: <span id="speed">—</span></div>
+                  <div class="muted">Szybkość: <span id="speed" class="speed-normal">—</span></div>
                 </div>
               </div>
             </div>
@@ -287,11 +300,12 @@
 
         <!-- completion card (hidden initially) -->
         <div id="completion" class="complete hidden" aria-live="polite">
-          <div style="font-weight:700; color:var(--navy)">Uruchom Zaaktualizowaną Wersję Bloga z:</div>
+          <div style="font-weight:700; color:var(--navy)">Uruchom najnowszą wersję aplikacji z:</div>
           <ul class="completion-list">
-            <li>Nowym Wpisem</li>
-            <li>Poprawą Błędów</li>
-            <li>Drobnymi poprawkami kosmetycznymi</li>
+            <li>Nowa Funkcja "Serce Gotowe" - twój wirtualny kalendarz adwentowy</li>
+            <li>Szata graficzna została zmieniona na świąteczną</li>
+            <li>Nowy wpis</li>
+            <li>Poprawa błędów i spraw kosmetycznych</li>
           </ul>
 
           <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
@@ -307,11 +321,13 @@
   <script>
     /* Polski UI — symulacja działania (bez adnotacji "symulacja") */
     (function(){
-      const TOTAL_MB = 385;
-      const TOTAL_SECONDS = 180; // 3 minuty
+      // Ustawienia
+      const TOTAL_MB = 1200;             // 1,2 GB
+      const TOTAL_SECONDS = 300;         // 5 minut = 300s (zgodnie z Twoim przykładem)
       const REDIRECT_URL = 'https://blogwpg.my.canva.site/';
-      const STORAGE_KEY = 'wpg_updated_v1';
+      const STORAGE_KEY = 'wpg_updated_v2'; // wersja klucza
 
+      // Elementy
       const updateBtn = document.getElementById('update-btn');
       const initialEl = document.getElementById('initial');
       const progressArea = document.getElementById('progress-area');
@@ -322,16 +338,31 @@
       const speedEl = document.getElementById('speed');
       const completionEl = document.getElementById('completion');
       const noteText = document.getElementById('note-text');
+      const requiredMBEl = document.getElementById('required-mb');
+      const totalMBEl = document.getElementById('total-mb');
 
-      // jeśli już zaktualizowane — automatycznie otwórz link (zgodnie z wymaganiem)
+      // Jeżeli już zaktualizowane — automatyczne przekierowanie
       if (localStorage.getItem(STORAGE_KEY) === '1') {
         window.location.href = REDIRECT_URL;
       }
 
-      // generuje losowe kroki tak, żeby suma_dur = TOTAL_SECONDS i suma_mb = TOTAL_MB
+      // Wyświetlenia początkowe
+      requiredMBEl.textContent = '1,2 GB';
+      totalMBEl.textContent = '1,2 GB';
+
+      // Generuje kroki tak, żeby suma_dur = TOTAL_SECONDS i suma_mb = TOTAL_MB
+      // Dodatkowo wstrzykuje kilka "słabych" kroków (bardzo niska przepustowość), by mieć nieregularne spadki prędkości
       function generateSteps(count){
-        const durWeights = new Array(count).fill(0).map(()=> Math.random() + 0.15 );
-        const mbWeights  = new Array(count).fill(0).map(()=> Math.random() + 0.15 );
+        const durWeights = new Array(count).fill(0).map(()=> Math.random() + 0.05 );
+        const mbWeights  = new Array(count).fill(0).map(()=> Math.random() + 0.05 );
+
+        // wybierz kilka indeksów na spowolnienia
+        const slowCount = Math.max(3, Math.floor(count * 0.06)); // ~6% kroków będą bardzo wolne
+        for (let i=0;i<slowCount;i++){
+          const idx = Math.floor(Math.random()*count);
+          mbWeights[idx] *= 0.06; // bardzo mały przyrost MB na tym kroku
+          durWeights[idx] *= 1.8; // te kroki trwają dłużej, aby uwidocznić spowolnienie
+        }
 
         const durSum = durWeights.reduce((a,b)=>a+b,0);
         const mbSum = mbWeights.reduce((a,b)=>a+b,0);
@@ -339,6 +370,7 @@
         const durations = durWeights.map(w => w / durSum * TOTAL_SECONDS); // seconds
         const mbs = mbWeights.map(w => w / mbSum * TOTAL_MB); // MB
 
+        // skumuluj
         const cumDur = [];
         const cumMB = [];
         let d=0, m=0;
@@ -348,6 +380,7 @@
           cumDur.push(d);
           cumMB.push(m);
         }
+        // upewnij się, że ostatni równa TOTAL
         const lastIdx = count-1;
         cumDur[lastIdx] = TOTAL_SECONDS;
         cumMB[lastIdx] = TOTAL_MB;
@@ -371,11 +404,16 @@
         progressArea.classList.remove('hidden');
         noteText.innerHTML = '<strong>Trwa aktualizacja…</strong><br>Proszę nie zamykać okna.';
 
-        const STEPS = 90 + Math.floor(Math.random()*40); // 90-129 kroków
+        const STEPS = 140 + Math.floor(Math.random()*60); // 140-199 kroków -> bardziej płynne, więcej nieregularności
         const {durations, cumDur, cumMB} = generateSteps(STEPS);
 
         const startTime = performance.now();
         let rafId = null;
+
+        // do liczenia prędkości chwilowej
+        let lastTime = startTime;
+        let lastMB = 0;
+        let lastDisplayedSpeed = null;
 
         function frame(){
           const now = performance.now();
@@ -395,14 +433,33 @@
           const percent = Math.min(100, currentMB / TOTAL_MB * 100);
 
           progressFilled.style.width = percent + '%';
+          // Pobrano: pokazuj w MB z jedną cyfrą
           downloadedEl.textContent = currentMB >= TOTAL_MB ? `${TOTAL_MB} MB` : `${currentMB.toFixed(1)} MB`;
           percentEl.textContent = Math.floor(percent) + '%';
 
           const remaining = Math.max(0, TOTAL_SECONDS - clampedElapsed);
           timeLeftEl.textContent = formatTimeSeconds(remaining);
 
-          const speed = elapsedSec > 0 ? (currentMB / elapsedSec) : 0;
-          speedEl.textContent = elapsedSec < 0.5 ? '—' : speed.toFixed(1) + ' MB/s';
+          // oblicz prędkość chwilową
+          const deltaSec = Math.max(0.001, (now - lastTime)/1000);
+          const instSpeed = (currentMB - lastMB) / deltaSec; // MB/s
+
+          // zrób minimalne wygładzenie dla czytelności
+          const displaySpeed = (lastDisplayedSpeed === null) ? instSpeed : (lastDisplayedSpeed*0.76 + instSpeed*0.24);
+          lastDisplayedSpeed = displaySpeed;
+
+          // formatowanie: jeśli <1 MB/s -> pokaż w KB/s i na czerwono
+          if (displaySpeed < 1.0) {
+            const kb = Math.round(displaySpeed * 1024);
+            speedEl.innerHTML = `${kb} kb/s`;
+            speedEl.className = 'speed-red';
+          } else {
+            speedEl.innerHTML = `${displaySpeed.toFixed(1)} MB/s`;
+            speedEl.className = 'speed-normal';
+          }
+
+          lastTime = now;
+          lastMB = currentMB;
 
           if (clampedElapsed < TOTAL_SECONDS) {
             rafId = requestAnimationFrame(frame);
@@ -423,12 +480,12 @@
         percentEl.textContent = '100%';
         timeLeftEl.textContent = '00:00';
         speedEl.textContent = '—';
+        speedEl.className = 'speed-normal';
 
+        // pokaż sekcję uruchomienia z dokładnym opisem (już w HTML)
         completionEl.classList.remove('hidden');
+        // po chwili aktywuj link (opcjonalnie) - tutaj link otwiera się na klik
       }
-
-      document.getElementById('required-mb').textContent = TOTAL_MB + 'mb';
-      document.getElementById('total-mb').textContent = TOTAL_MB + ' MB';
 
       // accessibility: enter key triggers
       updateBtn.addEventListener('keydown', (e)=>{
@@ -437,6 +494,9 @@
           updateBtn.click();
         }
       });
+
+      // Gdy użytkownik pobrał już aktualizację i otworzy ponownie — automatyczne przekierowanie (już na początku)
+      // (Zostawiono kontrolę przy starcie, klucz: wpg_updated_v2)
 
     })();
   </script>
