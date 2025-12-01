@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Wiara Przenosi Góry — Aktualizacja</title>
+  <title>Wiara Przenosi góry — Aktualizacja</title>
 
   <!-- Czcionki -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -239,7 +239,7 @@
     <header>
       <div class="logo-badge" aria-hidden="true">WPG</div>
       <div>
-        <h1 id="app-title">Wiara Przenosi Góry</h1>
+        <h1 id="app-title">Wiara Przenosi góry</h1>
       </div>
     </header>
 
@@ -254,19 +254,20 @@
               <div style="margin-top:10px; font-size:13px;">
                 <strong>W tej aktualizacji zostało dodane m.in.:</strong>
                 <ul style="margin:6px 0 0 18px; padding:0; color:#16324a;">
-                  <li>Nowa Funkcja "Serce Gotowe" - twój wirtualny kalendarz adwentowy</li>
-                  <li>Szata graficzna została zmieniona na świąteczną</li>
-                  <li>Nowy wpis</li>
-                  <li>Poprawa błędów i spraw kosmetycznych</li>
+                  <li>Nowy wpis na 2 grudnia</li>
+                  <li>Nowe kolory w dostosowaniu wyglądu strony: Żółty, Musztardowy, Jasny Niebieski Turkusowy oraz Granatowy</li>
+                  <li>Naprawienie Dyskretnej Intencji</li>
+                  <li>Zostały poprawione błędy i sprawy kosmetyczne</li>
+                  <li>Polepszona szybkość i wydajność bloga</li>
                 </ul>
               </div>
             </div>
-            <div class="muted" style="margin-top:10px">Wymagane: <strong id="required-mb">1,2 GB</strong></div>
+            <div class="muted" style="margin-top:10px">Wymagane: <strong id="required-mb">192,8 MB</strong></div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
             <button id="update-btn" class="btn pulse" aria-label="Zaaktualizuj">Zaaktualizuj</button>
-            <div class="hint" id="start-hint">Kliknij by rozpocząć</div>
+            <div class="hint" id="start-hint">Kliknij żeby rozpocząć</div>
           </div>
         </div>
 
@@ -280,8 +281,8 @@
 
               <div class="progress-meta" aria-live="polite">
                 <div>
-                  <div style="font-size:13px;color:#133050">Pobrano: <strong id="downloaded">0 MB</strong> / <span id="total-mb">1,2 GB</span></div>
-                  <div style="font-size:13px;color:#133050">Pozostały czas: <strong id="time-left">05:00</strong></div>
+                  <div style="font-size:13px;color:#133050">Pobrano: <strong id="downloaded">0 / 192,8 MB</strong></div>
+                  <div style="font-size:13px;color:#133050">Pozostały czas: <strong id="time-left">02:00</strong></div>
                 </div>
                 <div style="text-align:right">
                   <div class="muted">Szybkość: <span id="speed" class="speed-normal">—</span></div>
@@ -302,10 +303,11 @@
         <div id="completion" class="complete hidden" aria-live="polite">
           <div style="font-weight:700; color:var(--navy)">Uruchom najnowszą wersję aplikacji z:</div>
           <ul class="completion-list">
-            <li>Nowa Funkcja "Serce Gotowe" - twój wirtualny kalendarz adwentowy</li>
-            <li>Szata graficzna została zmieniona na świąteczną</li>
-            <li>Nowy wpis</li>
-            <li>Poprawa błędów i spraw kosmetycznych</li>
+            <li>Nowy wpis na 2 grudnia</li>
+            <li>Nowe kolory w dostosowaniu wyglądu strony: Żółty, Musztardowy, Jasny Niebieski Turkusowy oraz Granatowy</li>
+            <li>Naprawienie Dyskretnej Intencji</li>
+            <li>Zostały poprawione błędy i sprawy kosmetyczne</li>
+            <li>Polepszona szybkość i wydajność bloga</li>
           </ul>
 
           <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
@@ -319,15 +321,17 @@
   </div>
 
   <script>
-    /* Polski UI — symulacja działania (bez adnotacji "symulacja") */
+    /* Polski UI — symulacja działania */
     (function(){
       // Ustawienia
-      const TOTAL_MB = 1200;             // 1,2 GB
-      const TOTAL_SECONDS = 300;         // 5 minut = 300s (zgodnie z Twoim przykładem)
+      const TOTAL_MB = 192.8;             // 192,8 MB
+      const TIME_TO_50 = 30;               // czas do 50%: 30s
+      const TIME_TO_100 = 45;              // czas do 100%: 45s (ostatni etap 15s)
+      const TOTAL_SECONDS = TIME_TO_100;
       const REDIRECT_URL = 'https://blogwpg.my.canva.site/';
-      const STORAGE_KEY = 'wpg_updated_v2'; // wersja klucza
+      const STORAGE_KEY = 'wpg_updated_v3'; // nowa wersja klucza
 
-      // Elementy
+      // Elementy (pobieramy raz)
       const updateBtn = document.getElementById('update-btn');
       const initialEl = document.getElementById('initial');
       const progressArea = document.getElementById('progress-area');
@@ -339,51 +343,63 @@
       const completionEl = document.getElementById('completion');
       const noteText = document.getElementById('note-text');
       const requiredMBEl = document.getElementById('required-mb');
-      const totalMBEl = document.getElementById('total-mb');
 
       // Jeżeli już zaktualizowane — automatyczne przekierowanie
       if (localStorage.getItem(STORAGE_KEY) === '1') {
         window.location.href = REDIRECT_URL;
       }
 
-      // Wyświetlenia początkowe
-      requiredMBEl.textContent = '1,2 GB';
-      totalMBEl.textContent = '1,2 GB';
+      // Wyświetlenia początkowe (formaty z przecinkiem)
+      requiredMBEl.textContent = formatMB(TOTAL_MB);
+
+      function formatMB(v){
+        return v.toFixed(1).replace('.',',') + ' MB';
+      }
 
       // Generuje kroki tak, żeby suma_dur = TOTAL_SECONDS i suma_mb = TOTAL_MB
       // Dodatkowo wstrzykuje kilka "słabych" kroków (bardzo niska przepustowość), by mieć nieregularne spadki prędkości
       function generateSteps(count){
-        const durWeights = new Array(count).fill(0).map(()=> Math.random() + 0.05 );
-        const mbWeights  = new Array(count).fill(0).map(()=> Math.random() + 0.05 );
+        // Podziel kroki na dwie połowy tak, aby pierwsza połowa odpowiadała za 50% rozmiaru pliku
+        const count1 = Math.max(3, Math.floor(count * 0.5));
+        const count2 = Math.max(3, count - count1);
 
-        // wybierz kilka indeksów na spowolnienia
-        const slowCount = Math.max(3, Math.floor(count * 0.06)); // ~6% kroków będą bardzo wolne
-        for (let i=0;i<slowCount;i++){
-          const idx = Math.floor(Math.random()*count);
-          mbWeights[idx] *= 0.06; // bardzo mały przyrost MB na tym kroku
-          durWeights[idx] *= 1.8; // te kroki trwają dłużej, aby uwidocznić spowolnienie
-        }
+        // generuj wagi niezależnie dla MB i czasu, żeby móc tworzyć "słabe" kroki (mało MB, dużo czasu)
+        const mbW1 = new Array(count1).fill(0).map(()=> Math.random() + 0.05 );
+        const durW1 = new Array(count1).fill(0).map(()=> Math.random() + 0.05 );
+        const mbW2 = new Array(count2).fill(0).map(()=> Math.random() + 0.05 );
+        const durW2 = new Array(count2).fill(0).map(()=> Math.random() + 0.05 );
 
-        const durSum = durWeights.reduce((a,b)=>a+b,0);
-        const mbSum = mbWeights.reduce((a,b)=>a+b,0);
+        // wstrzykuj kilka spowolnień w każdej połowie
+        const slow1 = Math.max(1, Math.floor(count1 * 0.06));
+        for (let i=0;i<slow1;i++){ const idx = Math.floor(Math.random()*count1); mbW1[idx] *= 0.06; durW1[idx] *= 1.8; }
+        const slow2 = Math.max(1, Math.floor(count2 * 0.06));
+        for (let i=0;i<slow2;i++){ const idx = Math.floor(Math.random()*count2); mbW2[idx] *= 0.06; durW2[idx] *= 1.8; }
 
-        const durations = durWeights.map(w => w / durSum * TOTAL_SECONDS); // seconds
-        const mbs = mbWeights.map(w => w / mbSum * TOTAL_MB); // MB
+        const mbSum1 = mbW1.reduce((a,b)=>a+b,0);
+        const durSum1 = durW1.reduce((a,b)=>a+b,0);
+        const mbSum2 = mbW2.reduce((a,b)=>a+b,0);
+        const durSum2 = durW2.reduce((a,b)=>a+b,0);
 
-        // skumuluj
+        // przeskaluj tak, by pierwsza połowa dawała 50% MB i TIME_TO_50 czasu, druga połowa 50% MB i pozostały czas
+        const mbs1 = mbW1.map(w => w / mbSum1 * (TOTAL_MB * 0.5));
+        const durations1 = durW1.map(w => w / durSum1 * TIME_TO_50);
+
+        const mbs2 = mbW2.map(w => w / mbSum2 * (TOTAL_MB * 0.5));
+        const durations2 = durW2.map(w => w / durSum2 * (TIME_TO_100 - TIME_TO_50));
+
+        // połącz i skumuluj
         const cumDur = [];
         const cumMB = [];
         let d=0, m=0;
-        for (let i=0;i<count;i++){
-          d += durations[i];
-          m += mbs[i];
-          cumDur.push(d);
-          cumMB.push(m);
-        }
-        // upewnij się, że ostatni równa TOTAL
-        const lastIdx = count-1;
-        cumDur[lastIdx] = TOTAL_SECONDS;
-        cumMB[lastIdx] = TOTAL_MB;
+        for (let i=0;i<count1;i++){ d += durations1[i]; m += mbs1[i]; cumDur.push(d); cumMB.push(m); }
+        for (let j=0;j<count2;j++){ d += durations2[j]; m += mbs2[j]; cumDur.push(d); cumMB.push(m); }
+
+        // zabezpieczenie: ostatni dokładnie równa TOTAL
+        cumDur[cumDur.length-1] = TOTAL_SECONDS;
+        cumMB[cumMB.length-1] = TOTAL_MB;
+
+        // także zwracamy pojedyncze tablice durations (połączone) — mogą się przydać
+        const durations = durations1.concat(durations2);
 
         return {durations, cumDur, cumMB};
       }
@@ -404,7 +420,7 @@
         progressArea.classList.remove('hidden');
         noteText.innerHTML = '<strong>Trwa aktualizacja…</strong><br>Proszę nie zamykać okna.';
 
-        const STEPS = 140 + Math.floor(Math.random()*60); // 140-199 kroków -> bardziej płynne, więcej nieregularności
+        const STEPS = 90 + Math.floor(Math.random()*60); // 90-149 kroków -> płynne, trochę nieregularności
         const {durations, cumDur, cumMB} = generateSteps(STEPS);
 
         const startTime = performance.now();
@@ -433,8 +449,8 @@
           const percent = Math.min(100, currentMB / TOTAL_MB * 100);
 
           progressFilled.style.width = percent + '%';
-          // Pobrano: pokazuj w MB z jedną cyfrą
-          downloadedEl.textContent = currentMB >= TOTAL_MB ? `${TOTAL_MB} MB` : `${currentMB.toFixed(1)} MB`;
+          // Pobrano: pokaż w MB z jedną cyfrą i przecinkiem
+          downloadedEl.textContent = (currentMB >= TOTAL_MB ? formatMB(TOTAL_MB) : (currentMB.toFixed(1).replace('.',',') + ' / ' + formatMB(TOTAL_MB)));
           percentEl.textContent = Math.floor(percent) + '%';
 
           const remaining = Math.max(0, TOTAL_SECONDS - clampedElapsed);
@@ -464,7 +480,7 @@
           if (clampedElapsed < TOTAL_SECONDS) {
             rafId = requestAnimationFrame(frame);
           } else {
-            cancelAnimationFrame(rafId);
+            if (rafId) cancelAnimationFrame(rafId);
             finishUpdate();
           }
         }
@@ -476,15 +492,14 @@
         localStorage.setItem(STORAGE_KEY, '1');
 
         progressFilled.style.width = '100%';
-        downloadedEl.textContent = TOTAL_MB + ' MB';
+        downloadedEl.textContent = formatMB(TOTAL_MB);
         percentEl.textContent = '100%';
         timeLeftEl.textContent = '00:00';
         speedEl.textContent = '—';
         speedEl.className = 'speed-normal';
 
-        // pokaż sekcję uruchomienia z dokładnym opisem (już w HTML)
+        // pokaż sekcję uruchomienia z dokładnym opisem
         completionEl.classList.remove('hidden');
-        // po chwili aktywuj link (opcjonalnie) - tutaj link otwiera się na klik
       }
 
       // accessibility: enter key triggers
@@ -495,10 +510,10 @@
         }
       });
 
-      // Gdy użytkownik pobrał już aktualizację i otworzy ponownie — automatyczne przekierowanie (już na początku)
-      // (Zostawiono kontrolę przy starcie, klucz: wpg_updated_v2)
+      // Gdy użytkownik pobrał już aktualizację i otworzy ponownie — automatyczne przekierowanie (na początku skryptu)
 
     })();
   </script>
 </body>
 </html>
+
