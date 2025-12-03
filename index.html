@@ -13,14 +13,12 @@
       --navy: #1e3a8a;
       --quote-grad-start: #3b5998;
       --quote-grad-end: #5a8dee;
-      --point-blue: #2b7bd6;
 
       --card-bg: #f7fbff;
       --round-radius: 12px;
       --shadow-1: 0 10px 30px rgba(6,21,52,0.12);
       --shadow-2: 0 6px 18px rgba(59,89,152,0.08);
       --accent-text: #071a3a;
-      --glass: rgba(255,255,255,0.95);
 
       --danger: #c0392b;
       --ok: #1f8a1f;
@@ -130,19 +128,12 @@
       color:#4b6a98; font-size:14px;
     }
 
-    /* Progress area */
     .progress-wrap{
       margin-top:18px;
       display:grid;
       grid-template-columns: 1fr 110px;
       gap:16px;
       align-items:center;
-    }
-
-    .progress-column{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
     }
 
     .progress-bar{
@@ -161,14 +152,6 @@
       border-radius:999px;
       transition: width 0.25s linear;
       box-shadow: 0 6px 16px rgba(59,89,152,0.12) inset;
-    }
-
-    .progress-meta{
-      display:flex;
-      justify-content:space-between;
-      font-size:13px;
-      color:#274060;
-      align-items:center;
     }
 
     .percent-bubble{
@@ -197,41 +180,15 @@
 
     .hidden{ display:none !important }
 
-    /* pulse animation for button */
-    .pulse {
-      animation: pulse .95s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: translateY(0) scale(1) }
-      50% { transform: translateY(-2px) scale(1.01) }
-      100% { transform: translateY(0) scale(1) }
-    }
+    .pulse { animation: pulse .95s infinite; }
+    @keyframes pulse { 0% { transform: translateY(0) scale(1) } 50% { transform: translateY(-2px) scale(1.01) } 100% { transform: translateY(0) scale(1) } }
 
     .speed-red{ color: var(--danger); font-weight:700 }
     .speed-normal{ color: #16324a; font-weight:700 }
 
-    /* RESPONSYWNOŚĆ - szczególnie dla telefonów w pionie */
-    @media (max-width:760px){
-      .container{ padding:18px; border-radius:14px; }
-      .logo-badge{ width:56px;height:56px;border-radius:12px; }
-      h1{ font-size:30px; }
-      .progress-wrap{ grid-template-columns: 1fr 84px; gap:12px; align-items:center; }
-      .percent-bubble{ width:84px;height:84px; }
-      .progress-bar{ height:14px; }
-      .btn{ padding:12px 16px; border-radius:12px; font-size:15px; }
-      .note-text{ font-size:15px }
-    }
+    @media (max-width:760px){ .container{ padding:18px; border-radius:14px; } .logo-badge{ width:56px;height:56px;border-radius:12px; } h1{ font-size:30px; } .progress-wrap{ grid-template-columns: 1fr 84px; gap:12px; align-items:center; } .percent-bubble{ width:84px;height:84px; } .progress-bar{ height:14px; } .btn{ padding:12px 16px; border-radius:12px; font-size:15px; } .note-text{ font-size:15px } }
 
-    @media (max-width:420px){
-      .container{ padding:16px; border-radius:12px; }
-      header{ gap:12px; align-items:flex-start; }
-      .update-note{ flex-direction:column; align-items:stretch; gap:12px; }
-      .progress-wrap{ grid-template-columns: 1fr; }
-      .percent-bubble{ width:72px;height:72px; margin:0 auto; }
-      .progress-meta{ flex-direction:column; align-items:flex-start; gap:6px; }
-      .card{ padding:14px; }
-      .btn{ width:100%; justify-content:center; }
-    }
+    @media (max-width:420px){ .container{ padding:16px; border-radius:12px; } header{ gap:12px; align-items:flex-start; } .update-note{ flex-direction:column; align-items:stretch; gap:12px; } .progress-wrap{ grid-template-columns: 1fr; } .percent-bubble{ width:72px;height:72px; margin:0 auto; } .progress-meta{ flex-direction:column; align-items:flex-start; gap:6px; } .card{ padding:14px; } .btn{ width:100%; justify-content:center; } }
   </style>
 </head>
 <body>
@@ -245,7 +202,6 @@
 
     <main>
       <div class="card" id="card-root">
-        <!-- initial update prompt -->
         <div id="initial" class="update-note">
           <div style="flex:1">
             <div class="note-text" id="note-text">
@@ -254,15 +210,11 @@
               <div style="margin-top:10px; font-size:13px;">
                 <strong>W tej aktualizacji zostało dodane m.in.:</strong>
                 <ul style="margin:6px 0 0 18px; padding:0; color:#16324a;">
-                  <li>Nowy wpis na 2 grudnia</li>
-                  <li>Nowe kolory w dostosowaniu wyglądu strony: Żółty, Musztardowy, Jasny Niebieski Turkusowy oraz Granatowy</li>
-                  <li>Naprawienie Dyskretnej Intencji</li>
-                  <li>Zostały poprawione błędy i sprawy kosmetyczne</li>
-                  <li>Polepszona szybkość i wydajność bloga</li>
+                  <li>Wprowadza wpis na 3 grudnia</li>
                 </ul>
               </div>
             </div>
-            <div class="muted" style="margin-top:10px">Wymagane: <strong id="required-mb">192,8 MB</strong></div>
+            <div class="muted" style="margin-top:10px">Wymagane: <strong id="required-mb">38,9 MB</strong></div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
@@ -271,7 +223,6 @@
           </div>
         </div>
 
-        <!-- progress area (hidden initially) -->
         <div id="progress-area" class="hidden" style="margin-top:12px">
           <div class="progress-wrap">
             <div class="progress-column">
@@ -281,8 +232,8 @@
 
               <div class="progress-meta" aria-live="polite">
                 <div>
-                  <div style="font-size:13px;color:#133050">Pobrano: <strong id="downloaded">0 / 192,8 MB</strong></div>
-                  <div style="font-size:13px;color:#133050">Pozostały czas: <strong id="time-left">02:00</strong></div>
+                  <div style="font-size:13px;color:#133050">Pobrano: <strong id="downloaded">0 / 38,9 MB</strong></div>
+                  <div style="font-size:13px;color:#133050">Pozostały czas: <strong id="time-left">00:10</strong></div>
                 </div>
                 <div style="text-align:right">
                   <div class="muted">Szybkość: <span id="speed" class="speed-normal">—</span></div>
@@ -299,15 +250,10 @@
           </div>
         </div>
 
-        <!-- completion card (hidden initially) -->
         <div id="completion" class="complete hidden" aria-live="polite">
           <div style="font-weight:700; color:var(--navy)">Uruchom najnowszą wersję aplikacji z:</div>
           <ul class="completion-list">
-            <li>Nowy wpis na 2 grudnia</li>
-            <li>Nowe kolory w dostosowaniu wyglądu strony: Żółty, Musztardowy, Jasny Niebieski Turkusowy oraz Granatowy</li>
-            <li>Naprawienie Dyskretnej Intencji</li>
-            <li>Zostały poprawione błędy i sprawy kosmetyczne</li>
-            <li>Polepszona szybkość i wydajność bloga</li>
+            <li>Wprowadza wpis na 3 grudnia</li>
           </ul>
 
           <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
@@ -321,17 +267,16 @@
   </div>
 
   <script>
-    /* Polski UI — symulacja działania */
     (function(){
       // Ustawienia
-      const TOTAL_MB = 192.8;             // 192,8 MB
-      const TIME_TO_50 = 30;               // czas do 50%: 30s
-      const TIME_TO_100 = 45;              // czas do 100%: 45s (ostatni etap 15s)
+      const TOTAL_MB = 38.9;             // 38,9 MB
+      const TIME_TO_50 = 5;              // pierwsza połowa w 5s
+      const TIME_TO_100 = 10;            // cały proces w 10s
       const TOTAL_SECONDS = TIME_TO_100;
       const REDIRECT_URL = 'https://blogwpg.my.canva.site/';
-      const STORAGE_KEY = 'wpg_updated_v3'; // nowa wersja klucza
+      const STORAGE_KEY = 'wpg_updated_v4'; // nowa wersja klucza
 
-      // Elementy (pobieramy raz)
+      // Elementy
       const updateBtn = document.getElementById('update-btn');
       const initialEl = document.getElementById('initial');
       const progressArea = document.getElementById('progress-area');
@@ -344,73 +289,47 @@
       const noteText = document.getElementById('note-text');
       const requiredMBEl = document.getElementById('required-mb');
 
-      // Jeżeli już zaktualizowane — automatyczne przekierowanie
+      // Automatyczne przekierowanie jeżeli już zaktualizowane
       if (localStorage.getItem(STORAGE_KEY) === '1') {
         window.location.href = REDIRECT_URL;
       }
 
-      // Wyświetlenia początkowe (formaty z przecinkiem)
       requiredMBEl.textContent = formatMB(TOTAL_MB);
 
-      function formatMB(v){
-        return v.toFixed(1).replace('.',',') + ' MB';
-      }
+      function formatMB(v){ return v.toFixed(1).replace('.',',') + ' MB'; }
 
-      // Generuje kroki tak, żeby suma_dur = TOTAL_SECONDS i suma_mb = TOTAL_MB
-      // Dodatkowo wstrzykuje kilka "słabych" kroków (bardzo niska przepustowość), by mieć nieregularne spadki prędkości
       function generateSteps(count){
-        // Podziel kroki na dwie połowy tak, aby pierwsza połowa odpowiadała za 50% rozmiaru pliku
-        const count1 = Math.max(3, Math.floor(count * 0.5));
-        const count2 = Math.max(3, count - count1);
+        // Podział na dwie połowy: pierwsza połowa MB -> TIME_TO_50, druga -> reszta czasu
+        const count1 = Math.max(2, Math.floor(count * 0.5));
+        const count2 = Math.max(2, count - count1);
 
-        // generuj wagi niezależnie dla MB i czasu, żeby móc tworzyć "słabe" kroki (mało MB, dużo czasu)
         const mbW1 = new Array(count1).fill(0).map(()=> Math.random() + 0.05 );
         const durW1 = new Array(count1).fill(0).map(()=> Math.random() + 0.05 );
         const mbW2 = new Array(count2).fill(0).map(()=> Math.random() + 0.05 );
         const durW2 = new Array(count2).fill(0).map(()=> Math.random() + 0.05 );
 
-        // wstrzykuj kilka spowolnień w każdej połowie
-        const slow1 = Math.max(1, Math.floor(count1 * 0.06));
-        for (let i=0;i<slow1;i++){ const idx = Math.floor(Math.random()*count1); mbW1[idx] *= 0.06; durW1[idx] *= 1.8; }
-        const slow2 = Math.max(1, Math.floor(count2 * 0.06));
-        for (let i=0;i<slow2;i++){ const idx = Math.floor(Math.random()*count2); mbW2[idx] *= 0.06; durW2[idx] *= 1.8; }
+        // kilka wolnych kroków
+        for (let i=0;i<Math.max(1,Math.floor(count1*0.06));i++){ const idx = Math.floor(Math.random()*count1); mbW1[idx] *= 0.06; durW1[idx] *= 1.8; }
+        for (let i=0;i<Math.max(1,Math.floor(count2*0.06));i++){ const idx = Math.floor(Math.random()*count2); mbW2[idx] *= 0.06; durW2[idx] *= 1.8; }
 
-        const mbSum1 = mbW1.reduce((a,b)=>a+b,0);
-        const durSum1 = durW1.reduce((a,b)=>a+b,0);
-        const mbSum2 = mbW2.reduce((a,b)=>a+b,0);
-        const durSum2 = durW2.reduce((a,b)=>a+b,0);
+        const mbSum1 = mbW1.reduce((a,b)=>a+b,0); const durSum1 = durW1.reduce((a,b)=>a+b,0);
+        const mbSum2 = mbW2.reduce((a,b)=>a+b,0); const durSum2 = durW2.reduce((a,b)=>a+b,0);
 
-        // przeskaluj tak, by pierwsza połowa dawała 50% MB i TIME_TO_50 czasu, druga połowa 50% MB i pozostały czas
         const mbs1 = mbW1.map(w => w / mbSum1 * (TOTAL_MB * 0.5));
         const durations1 = durW1.map(w => w / durSum1 * TIME_TO_50);
-
         const mbs2 = mbW2.map(w => w / mbSum2 * (TOTAL_MB * 0.5));
         const durations2 = durW2.map(w => w / durSum2 * (TIME_TO_100 - TIME_TO_50));
 
-        // połącz i skumuluj
-        const cumDur = [];
-        const cumMB = [];
-        let d=0, m=0;
+        const cumDur = []; const cumMB = []; let d=0,m=0;
         for (let i=0;i<count1;i++){ d += durations1[i]; m += mbs1[i]; cumDur.push(d); cumMB.push(m); }
         for (let j=0;j<count2;j++){ d += durations2[j]; m += mbs2[j]; cumDur.push(d); cumMB.push(m); }
 
-        // zabezpieczenie: ostatni dokładnie równa TOTAL
-        cumDur[cumDur.length-1] = TOTAL_SECONDS;
-        cumMB[cumMB.length-1] = TOTAL_MB;
-
-        // także zwracamy pojedyncze tablice durations (połączone) — mogą się przydać
+        cumDur[cumDur.length-1] = TOTAL_SECONDS; cumMB[cumMB.length-1] = TOTAL_MB;
         const durations = durations1.concat(durations2);
-
         return {durations, cumDur, cumMB};
       }
 
-      function formatTimeSeconds(s){
-        if (s < 0) s = 0;
-        s = Math.round(s);
-        const mm = Math.floor(s/60);
-        const ss = s % 60;
-        return String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
-      }
+      function formatTimeSeconds(s){ if (s < 0) s = 0; s = Math.round(s); const mm = Math.floor(s/60); const ss = s % 60; return String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0'); }
 
       updateBtn.addEventListener('click', startUpdate);
 
@@ -420,16 +339,12 @@
         progressArea.classList.remove('hidden');
         noteText.innerHTML = '<strong>Trwa aktualizacja…</strong><br>Proszę nie zamykać okna.';
 
-        const STEPS = 90 + Math.floor(Math.random()*60); // 90-149 kroków -> płynne, trochę nieregularności
+        const STEPS = 30 + Math.floor(Math.random()*20); // 30-49 kroków
         const {durations, cumDur, cumMB} = generateSteps(STEPS);
 
         const startTime = performance.now();
         let rafId = null;
-
-        // do liczenia prędkości chwilowej
-        let lastTime = startTime;
-        let lastMB = 0;
-        let lastDisplayedSpeed = null;
+        let lastTime = startTime; let lastMB = 0; let lastDisplayedSpeed = null;
 
         function frame(){
           const now = performance.now();
@@ -440,49 +355,30 @@
           if (idx === -1) idx = cumDur.length - 1;
           const prevCum = idx === 0 ? 0 : cumMB[idx-1];
           const prevTime = idx === 0 ? 0 : cumDur[idx-1];
-          const nextCum = cumMB[idx];
-          const nextTime = cumDur[idx];
-
+          const nextCum = cumMB[idx]; const nextTime = cumDur[idx];
           const ratio = nextTime === prevTime ? 1 : (clampedElapsed - prevTime)/(nextTime - prevTime);
           const currentMB = prevCum + (nextCum - prevCum) * ratio;
 
           const percent = Math.min(100, currentMB / TOTAL_MB * 100);
-
           progressFilled.style.width = percent + '%';
-          // Pobrano: pokaż w MB z jedną cyfrą i przecinkiem
           downloadedEl.textContent = (currentMB >= TOTAL_MB ? formatMB(TOTAL_MB) : (currentMB.toFixed(1).replace('.',',') + ' / ' + formatMB(TOTAL_MB)));
           percentEl.textContent = Math.floor(percent) + '%';
 
           const remaining = Math.max(0, TOTAL_SECONDS - clampedElapsed);
           timeLeftEl.textContent = formatTimeSeconds(remaining);
 
-          // oblicz prędkość chwilową
           const deltaSec = Math.max(0.001, (now - lastTime)/1000);
           const instSpeed = (currentMB - lastMB) / deltaSec; // MB/s
-
-          // zrób minimalne wygładzenie dla czytelności
           const displaySpeed = (lastDisplayedSpeed === null) ? instSpeed : (lastDisplayedSpeed*0.76 + instSpeed*0.24);
           lastDisplayedSpeed = displaySpeed;
 
-          // formatowanie: jeśli <1 MB/s -> pokaż w KB/s i na czerwono
-          if (displaySpeed < 1.0) {
-            const kb = Math.round(displaySpeed * 1024);
-            speedEl.innerHTML = `${kb} kb/s`;
-            speedEl.className = 'speed-red';
-          } else {
-            speedEl.innerHTML = `${displaySpeed.toFixed(1)} MB/s`;
-            speedEl.className = 'speed-normal';
-          }
+          if (displaySpeed < 1.0) { const kb = Math.round(displaySpeed * 1024); speedEl.innerHTML = `${kb} kb/s`; speedEl.className = 'speed-red'; }
+          else { speedEl.innerHTML = `${displaySpeed.toFixed(1)} MB/s`; speedEl.className = 'speed-normal'; }
 
-          lastTime = now;
-          lastMB = currentMB;
+          lastTime = now; lastMB = currentMB;
 
-          if (clampedElapsed < TOTAL_SECONDS) {
-            rafId = requestAnimationFrame(frame);
-          } else {
-            if (rafId) cancelAnimationFrame(rafId);
-            finishUpdate();
-          }
+          if (clampedElapsed < TOTAL_SECONDS) { rafId = requestAnimationFrame(frame); }
+          else { if (rafId) cancelAnimationFrame(rafId); finishUpdate(); }
         }
 
         rafId = requestAnimationFrame(frame);
@@ -490,30 +386,19 @@
 
       function finishUpdate(){
         localStorage.setItem(STORAGE_KEY, '1');
-
         progressFilled.style.width = '100%';
         downloadedEl.textContent = formatMB(TOTAL_MB);
         percentEl.textContent = '100%';
         timeLeftEl.textContent = '00:00';
-        speedEl.textContent = '—';
-        speedEl.className = 'speed-normal';
-
-        // pokaż sekcję uruchomienia z dokładnym opisem
+        speedEl.textContent = '—'; speedEl.className = 'speed-normal';
         completionEl.classList.remove('hidden');
       }
 
-      // accessibility: enter key triggers
-      updateBtn.addEventListener('keydown', (e)=>{
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          updateBtn.click();
-        }
-      });
-
-      // Gdy użytkownik pobrał już aktualizację i otworzy ponownie — automatyczne przekierowanie (na początku skryptu)
+      updateBtn.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); updateBtn.click(); } });
 
     })();
   </script>
 </body>
 </html>
+
 
